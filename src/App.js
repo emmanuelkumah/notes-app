@@ -11,22 +11,15 @@ import Home from "./Components/Pages/Home";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#f64740",
+      main: "#2A324B",
     },
     secondary: {
-      main: "#49111C",
+      main: "#5F6062",
     },
     typography: {
       fontFamily: ["Montserrat", "Roboto"].join(","),
       // fontFamily: "Montserrat, Arial",
     },
-    // overrides: {
-    //   MuiCssBaseline: {
-    //     "@global": {
-    //       "@font-face": [montserrat],
-    //     },
-    //   },
-    // },
   },
 });
 
