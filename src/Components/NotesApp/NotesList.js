@@ -7,24 +7,22 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  // paper: {
-  //   height: 140,
-  //   width: 100,
-  // },
-  //   control: {
-  //     padding: theme.spacing(2),
-  //   },
 }));
 
 function NotesList({ notes }) {
+  const classes = useStyles();
   return (
-    <div>
-      <Grid container justify="center" spacing={3}>
-        {notes.map((note) => (
-          <Grid key={note} item md={4}>
-            <Note note={note.note} />
-          </Grid>
-        ))}
+    <div className={classes.root}>
+      <Grid container spacing={3}>
+        <Grid xs={2} />
+        <Grid xs={8}>
+          {notes.map((note) => (
+            <Grid item sm={12} md={4} key={note}>
+              <Note text={note.text} id={note.id} />
+            </Grid>
+          ))}
+        </Grid>
+        <Grid xs={2} />
       </Grid>
     </div>
   );

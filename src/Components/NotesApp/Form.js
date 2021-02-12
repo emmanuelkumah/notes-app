@@ -1,7 +1,7 @@
 import React from "react";
 import { Fab, TextField } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-
+import db from "./firebase";
 import { makeStyles } from "@material-ui/core/styles";
 
 //style the input text
@@ -9,15 +9,22 @@ const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
       margin: theme.spacing(1),
-      width: "65ch",
+      width: "60%",
     },
   },
+  input: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   actionBtn: {
+    width: "20px",
+    marginRight: "50px",
     float: "right",
   },
 }));
 
-function Form({ inputText, setInputText, notes, setNotes }) {
+function Form({ inputText, setInputText }) {
   const classes = useStyles();
 
   //get the input text
@@ -25,28 +32,33 @@ function Form({ inputText, setInputText, notes, setNotes }) {
     setInputText(event.target.value);
   };
 
-  //submit the input text
-  const submitTextHandler = (event) => {
-    // console.log("the input is " + inputText);
+  //Add notes to the db
+  const addNoteHandler = (event) => {
+    //prevent browser refresh
     event.preventDefault();
-    const addNotes = { id: "id", note: inputText, completed: false };
-    //grab all the notes, and add the new note
-    setNotes([...notes, addNotes]);
+    //fetch the collection from db and add new note
+    db.collection("notes").add({
+      text: inputText,
+    });
     setInputText("");
   };
+
   return (
     <div>
-      <form className={classes.root} noValidate autoComplete="off">
+      <form className={classes.root}>
         <TextField
           label="Jot your notes "
           variant="outlined"
-          //   id="outlined-full-width"
-          placeholder="Write your notes here"
           color="primary"
           onChange={inputTextHandler}
         />
         <div className={classes.actionBtn}>
-          <Fab color="secondary" aria-label="add" onClick={submitTextHandler}>
+          <Fab
+            color="secondary"
+            aria-label="add"
+            type="submit"
+            onClick={addNoteHandler}
+          >
             <AddIcon />
           </Fab>
         </div>

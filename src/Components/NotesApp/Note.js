@@ -8,10 +8,13 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 const useStyles = makeStyles({
   root: {
     maxWidth: 645,
+    borderRadius: "10px",
   },
   text: {
     fontFamily: "Roboto",
@@ -19,7 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
-function Note({ note }) {
+function Note({ text }) {
   const classes = useStyles();
 
   return (
@@ -33,16 +36,16 @@ function Note({ note }) {
               component="p"
               className={classes.text}
             >
-              {note}
+              {text}
             </Typography>
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary">
-            Share
+          <Button size="small" color="primary" startIcon={<DeleteIcon />}>
+            Delete
           </Button>
-          <Button size="small" color="primary">
-            Learn More
+          <Button size="small" color="secondary" startIcon={<EditIcon />}>
+            Update
           </Button>
         </CardActions>
       </Card>
