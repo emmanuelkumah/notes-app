@@ -5,24 +5,22 @@ import NotesList from "./NotesList";
 import db from "./firebase";
 
 function NotesApp() {
-  const [inputText, setInputText] = useState("");
+  const [input, setInput] = useState({
+    title: "",
+    note: "",
+  });
   const [notes, setNotes] = useState([]);
 
-  //access the db and fetch all documents
+  // access the db and fetch all documents
   useEffect(() => {
-    const unsubscribe = db.collectionGroup("notes").onSnapshot((snapshot) => {
-      setNotes(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          text: doc.data().text,
-        }))
-      );
+    const unsubscribe = db.collection("notes").onSnapshot((snapshot) => {
+      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setNotes(data);
     });
   }, []);
-  console.log("All data in 'notes' collection", notes);
 
   return (
-    <div style={{ backgroundColor: "#f5f5f5", height: "100vh" }}>
+    <div>
       <Container>
         <div>
           <Typography variant="h2" component="h2">
@@ -31,8 +29,8 @@ function NotesApp() {
         </div>
 
         <Form
-          inputText={inputText}
-          setInputText={setInputText}
+          input={input}
+          setInput={setInput}
           notes={notes}
           setNotes={setNotes}
         />

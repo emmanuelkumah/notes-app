@@ -24,32 +24,44 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Form({ inputText, setInputText }) {
+function Form({ input, setInput }) {
   const classes = useStyles();
 
   //get the input text
   const inputTextHandler = (event) => {
-    setInputText(event.target.value);
+    setInput({ ...input, [event.target.name]: event.target.value });
   };
+  console.log({ input });
 
-  //Add notes to the db
+  //Add doc to the collection
   const addNoteHandler = (event) => {
     //prevent browser refresh
     event.preventDefault();
     //fetch the collection from db and add new note
     db.collection("notes").add({
-      text: inputText,
+      title: input.title,
+      note: input.note,
     });
-    setInputText("");
+    setInput({ title: "", note: "" });
   };
 
   return (
     <div>
       <form className={classes.root}>
         <TextField
+          name="title"
+          label="Title of note "
+          variant="outlined"
+          color="primary"
+          value={input.title}
+          onChange={inputTextHandler}
+        />
+        <TextField
+          name="note"
           label="Jot your notes "
           variant="outlined"
           color="primary"
+          value={input.note}
           onChange={inputTextHandler}
         />
         <div className={classes.actionBtn}>

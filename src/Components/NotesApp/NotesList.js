@@ -14,15 +14,11 @@ function NotesList({ notes }) {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid xs={2} />
-        <Grid xs={8}>
-          {notes.map((note) => (
-            <Grid item sm={12} md={4} key={note}>
-              <Note text={note.text} id={note.id} />
-            </Grid>
-          ))}
-        </Grid>
-        <Grid xs={2} />
+        {notes.map((note) => (
+          <Grid item sm={12} md={4} key={note}>
+            <Note id={note.id} title={note.title} note={note.note} />
+          </Grid>
+        ))}
       </Grid>
     </div>
   );
