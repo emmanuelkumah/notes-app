@@ -2,6 +2,7 @@ import React from "react";
 import { Fab, TextField } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import db from "./firebase";
+import firebase from "firebase";
 import { makeStyles } from "@material-ui/core/styles";
 
 //style the input text
@@ -35,13 +36,14 @@ function Form({ input, setInput }) {
 
   //Add doc to the collection
   const addNoteHandler = (event) => {
-    //prevent browser refresh
     event.preventDefault();
-    //fetch the collection from db and add new note
+    //fetch the collection from db and add new note using  the following keys
     db.collection("notes").add({
       title: input.title,
       note: input.note,
+      created: firebase.firestore.FieldValue.serverTimestamp(),
     });
+    //clear input fields on submit
     setInput({ title: "", note: "" });
   };
 

@@ -13,10 +13,16 @@ function NotesApp() {
 
   // access the db and fetch all documents
   useEffect(() => {
-    const unsubscribe = db.collection("notes").onSnapshot((snapshot) => {
-      const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setNotes(data);
-    });
+    const unsubscribe = db
+      .collection("notes")
+      .orderBy("created", "desc")
+      .onSnapshot((snapshot) => {
+        const data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setNotes(data);
+      });
   }, []);
 
   return (

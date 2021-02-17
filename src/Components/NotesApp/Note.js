@@ -49,6 +49,7 @@ function getModalStyle() {
   };
 }
 
+//Define the note component
 function Note({ title, note, id }) {
   const [editNote, setEditNote] = useState({ title: title, note: note });
   const classes = useStyles();
@@ -60,14 +61,32 @@ function Note({ title, note, id }) {
       .delete()
       .then(() => console.log("Document Deleted"))
       .catch((error) => console.error("error deleting document", error));
-    // console.log(`The id is ${id}  and the note is ${title}`);
   };
 
-  //Edit doc from the collection
-  // const editNoteHandler = (event) => {
-  //   console.log(`The note to edit is ${title}`);
-  // };
+  //get the values of the input fields to update
+  const inputChangeHandler = (event) => {
+    setEditNote({
+      ...editNote,
+      [event.target.name]: event.target.value,
+    });
+  };
 
+  //update the  note
+  const updateNote = () => {
+    db.collection("notes")
+      .doc(id)
+      .update({
+        title: editNote.title,
+        note: editNote.note,
+      })
+      .then(() => {
+        console.log("Document updated");
+      })
+      .catch((error) => {
+        console.error("error updating", error);
+      });
+    setOpen(false);
+  };
   //define the modal body
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = useState(getModalStyle);
@@ -81,18 +100,7 @@ function Note({ title, note, id }) {
     setOpen(false);
   };
 
-  //edit the note
-  // const editNoteHandler =()=>{
-  //   //update the doc with the new details
-  //   db.collection("notes").doc(id).set(
-  //     {
-  //       title:
-  //     }
-  //   )
-
-  // }
-
-  //body of the note
+  //define the body of the note to edit
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <div>
@@ -110,8 +118,9 @@ function Note({ title, note, id }) {
                 fullWidth
                 label="Edit Title"
                 variant="outlined"
+                name="title"
                 value={editNote.title}
-                // onChange={editNoteHandler}
+                onChange={inputChangeHandler}
               />
             </div>
             <div>
@@ -120,13 +129,16 @@ function Note({ title, note, id }) {
                 fullWidth
                 multiline
                 rowsMax={6}
+                name="note"
                 value={editNote.note}
-                // onChange={editNoteHandler}
+                onChange={inputChangeHandler}
               />
             </div>
           </CardContent>
           <CardActions>
-            <Button color="primary">Save Note</Button>
+            <Button color="primary" onClick={updateNote}>
+              Save Note
+            </Button>
           </CardActions>
         </CardActionArea>
       </Card>
@@ -135,9 +147,6 @@ function Note({ title, note, id }) {
 
   return (
     <div>
-      {/* <button type="button" onClick={handleOpen}>
-        Open Modal
-      </button> */}
       <Modal
         open={open}
         onClose={handleClose}
